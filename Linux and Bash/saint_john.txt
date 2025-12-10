@@ -1,0 +1,4 @@
+1 - tail -f /var/log/bad.log
+2 - lsof | grep '/var/log/bad.log'
+3 - kill -9 587
+4 - tail -f /var/log/bad.log
