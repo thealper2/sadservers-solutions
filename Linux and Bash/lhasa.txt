@@ -1,0 +1,17 @@
+1 - nano solve.py
+
+n = 0
+total = 0.0
+
+with open('scores.txt', 'r') as file:
+        for line in file:
+                _, score = map(float, line.strip().split())
+                n += 1
+                total += score
+
+avg = total / n
+print(avg)
+
+2 - python3 solve.py
+3 - echo 'X.X' > ~/solution
+4 - md5sum ~/solution
