@@ -1,0 +1,12 @@
+1 - cd clmystery/mystery
+2 - cat crimescene | grep 'CLUE'
+3 - grep -Fxf memberships/Rotary_Club memberships/Delta_SkyMiles > common.txt
+4 - grep -Fxf memberships/Terminal_City_Library common.txt > common2.txt
+5 - grep -Fxf memberships/Museum_of_Bash_History common2.txt > common3.txt
+6 - cat people | grep 'Annabel'
+7 - head -n 179 streets/Buckingham_Place | tail -1
+8 - cat interviews/interview-699607
+9 - grep -E 'L337.*9' vehicles
+10 - awk '/License Plate L337DV9/,/^$/' vehicles
+11 - echo 'X X' > ~/mysolution
+12 - md5sum ~/mysolution
