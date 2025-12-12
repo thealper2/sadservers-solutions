@@ -1,0 +1,3 @@
+1 - tail /home/admin/access.log
+2 - grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" /home/admin/access.log | sort | uniq -c | sort -nr | head -1
+3 - echo X.X.X.X > /home/admin/highestip.txt
