@@ -1,0 +1,4 @@
+1 - ls /proc/sys
+2 - find /proc/sys -type f -exec grep -l "^secret:" {} \; 2>/dev/null
+3 - echo "xxx" > ~/secret.txt
+4 - md5sum ~/secret.txt
