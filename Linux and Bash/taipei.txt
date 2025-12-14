@@ -1,0 +1,8 @@
+1 - curl localhost
+2 - which knockd
+3 - for port in {1..10000}; do
+    nc -z -w 1 localhost $port
+    curl -s localhost >/dev/null && echo "Port $port worked!" && break
+done
+# Port XXXX worked!
+4 - curl localhost
