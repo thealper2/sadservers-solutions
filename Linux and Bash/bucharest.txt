@@ -1,0 +1,10 @@
+1 - PGPASSWORD=app1user psql -h 127.0.0.1 -d app1 -U app1user -c '\q'
+2 - sudo -u postgres psql -c "SHOW hba_file;"
+3 - sudo nano /etc/postgresql/13/main/pg_hba.conf
+
+#Remove:
+#  host    all             all             all                     reject
+# host    all             all             all                     reject
+
+4 - sudo systemctl restart postgresql
+5 - PGPASSWORD=app1user psql -h 127.0.0.1 -d app1 -U app1user -c '\q'
