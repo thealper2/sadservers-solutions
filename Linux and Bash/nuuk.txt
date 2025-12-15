@@ -1,0 +1,9 @@
+1 - ssh admin@127.0.0.1
+2 - sudo chown -R admin:admin /home/admin/.ssh
+3 - chmod 700 /home/admin/.ssh
+4 - chmod 600 /home/admin/.ssh/authorized_keys
+5 - chmod 600 /home/admin/.ssh/id_ed25519
+6 - chmod 644 /home/admin/.ssh/id_ed25519.pub
+7 - touch /home/admin/.ssh/known_hosts
+8 - chmod 644 /home/admin/.ssh/known_hosts
+9 - ssh admin@127.0.0.1
