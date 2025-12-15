@@ -1,0 +1,15 @@
+1 - sudo bash /opt/scripts/health.sh
+2 - sudo systemctl enable --now health.timer
+3 - cat /var/log/health.log
+4 - sudo systemctl status nginx
+5 - curl -s http://localhost | head
+6 - sudo ss -lntp | grep nginx
+7 - sudo timeout 2 curl -v http://127.0.0.1
+8 - sudo systemctl cat health.service
+9 - cat /etc/hosts
+10 - sudo iptables -L -n -v
+11 - sudo iptables -L OUTPUT -n -v --line-numbers
+12 - sudo iptables -D OUTPUT 1
+13 - curl -v --connect-timeout 3 http://127.0.0.1
+14 - sudo bash /opt/scripts/health.sh
+15 - tail -n 5 /var/log/health.log
