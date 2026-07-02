@@ -1,0 +1,20 @@
+1 - kubectl describe pod nginx-deployment-67699598cc-zrj6f
+2 - nano manifest.yml and Remove:
+
+nodeSelector:
+  disk: ssd
+
+3 - nano manifest.yml and Replace:
+
+limits:
+  memory: 128Mi
+  cpu: 100m
+requests:
+  cpu: 100m
+  memory: 64Mi
+
+4 - kubectl delete -f manifest.yml
+5 - kubectl apply -f manifest.yml 
+6 - kubectl get pods -w
+7 - kubectl get svc
+8 - ./agent/check.sh 
