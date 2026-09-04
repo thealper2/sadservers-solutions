@@ -1,0 +1,29 @@
+1 - cat /home/admin/ports-to-scan.txt
+2 - nano port_audit.sh
+
+#!/bin/bash
+
+INPUT_FILE="/home/admin/ports-to-scan.txt"
+OUTPUT_FILE="/home/admin/port-audit.txt"
+
+> "$OUTPUT_FILE"
+
+while read port; do
+    if [ -z "$port" ]; then
+        continue
+    fi
+
+    if timeout 1 bash -c "echo >/dev/tcp/127.0.0.1/$port" 2>/dev/null; then
+        echo "$port open" >> "$OUTPUT_FILE"
+    else
+        echo "$port closed" >> "$OUTPUT_FILE"
+    fi
+done < "$INPUT_FILE"
+
+sort -n -o "$OUTPUT_FILE" "$OUTPUT_FILE"
+
+cat "$OUTPUT_FILE"
+
+3 - chmod +x port_audit.sh
+4 - ./port_audit.sh
+5 - ./agent/check.sh
