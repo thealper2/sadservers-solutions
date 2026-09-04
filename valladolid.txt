@@ -1,0 +1,23 @@
+1 - sudo systemctl status log-cleaner --no-pager
+2 - cat /etc/systemd/system/log-cleaner.service
+3 - cat /opt/scripts/log-cleaner.sh
+4 - sudo nano /opt/scripts/log-cleaner.sh
+
+#!/bin/bash
+
+# Configuration
+LOG_DIR="/var/log/app"
+DAYS=7
+
+echo "Starting Cleanup..."
+
+find "$LOG_DIR" -maxdepth 1 -name "*.log" -type f -mtime +$DAYS -print -delete
+
+echo "Cleanup finished."
+
+5 - ls -la /var/log/app/
+6 - sudo /opt/scripts/log-cleaner.sh
+7 - ls -la /var/log/app/
+8 - sudo systemctl restart log-cleaner
+9 - ls -la /var/log/app
+10 - ./agent/check.sh
