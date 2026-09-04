@@ -1,0 +1,41 @@
+1 - cat README.txt
+2 - ls -la data.csv
+3 - wc -l data.csv
+4 - head -1 data.csv
+5 - du -h data.csv
+6 - nano split_csv.sh
+
+#!/bin/bash
+
+for i in {1..10}
+do
+    filename=$(printf "data-%02d.csv" $((i-1)))
+    
+    echo -n "$filename: "
+    
+    {
+        head -1 data.csv
+        tail -n +2 data.csv | cut -d "," -f $i
+    } > "$filename"
+    
+    size=$(stat -c%s "$filename")
+    if [ $size -gt 32768 ]; then
+        truncate --size=32768 "$filename"
+        echo "$size bytes -> TRUNCATED"
+    else
+        echo "$size bytes ✓"
+    fi
+done
+
+echo ""
+echo "=== FILE INFORMATION ==="
+ls -lh data-*.csv
+
+echo ""
+echo "=== CHECK SCRIPT ==="
+/home/admin/agent/check.sh
+
+7 - chmod +x split_csv.sh
+8 - ./split_csv.sh
+9 - ./agent/check.sh
+
