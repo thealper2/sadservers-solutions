@@ -1,0 +1,19 @@
+1 - cat incident-notes.txt
+2 - mount | grep cgroup
+3 - ls -la /opt/sad/
+4 - cat /opt/sad/setup-cgroup.sh
+5 - cat /sys/fs/cgroup/sad-batch/memory.max 2>/dev/null
+6 - cat /sys/fs/cgroup/sad-batch/memory.high 2>/dev/null
+7 - sudo nano /opt/sad/setup-cgroup.sh
+
+#!/usr/bin/env bash
+set -euo pipefail
+
+CGROUP=/sys/fs/cgroup/sad-batch
+
+mkdir -p "$CGROUP"
+echo 134217728 > "$CGROUP/memory.max"
+
+8 - sudo /opt/sad/setup-cgroup.sh
+9 - cat /sys/fs/cgroup/sad-batch/memory.max
+10 - ./agent/check.sh
