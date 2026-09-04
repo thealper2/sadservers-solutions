@@ -1,0 +1,4 @@
+1 - ls -la
+2 - head -1 polldayregistrations_enregistjourduscrutin10001.csv > all.csv
+3 - tail -n +2 -q polldayregistrations_enregistjourduscrutin?????.csv >> all.csv
+4 - ./agent/check.sh
