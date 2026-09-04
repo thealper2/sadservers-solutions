@@ -1,0 +1,9 @@
+1 - which ls
+2 - ls /home/admin/records
+3 - file /usr/bin/ls
+4 - cat /usr/bin/ls
+5 - find /home/admin/records -name "shosoin.tag" 2>/dev/null
+6 - tree /home/admin/records
+7 - echo "/home/admin/records/incoming/west/batch-02/parcels/box-7/misfiled/shosoin.tag" > /home/admin/solution.txt
+8 - cat /home/admin/solution.txt
+9 - ./agent/check.sh
