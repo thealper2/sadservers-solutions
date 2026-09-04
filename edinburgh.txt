@@ -1,0 +1,73 @@
+1 - sudo systemctl status edinburgh-api
+2 - sudo systemctl status edinburgh-sync
+3 - cat /etc/systemd/system/edinburgh-api.service
+4 - cat /etc/systemd/system/edinburgh-sync.service
+5 - cat /home/admin/edinburgh-sync.sh
+6 - ls -la /var/lib/edinburgh/
+7 - curl http://127.0.0.1:9178/
+8 - sudo journalctl -u edinburgh-api -n 20 --no-pager
+9 - sudo netstat -tlnp | grep :21
+10 - ps aux | grep python | grep ftp
+11 - sudo readlink -f /proc/$(pgrep -f edinburgh-ftpd.py)/cwd
+12 - ls -la /srv/ftp/edinburgh/
+13 - cat /usr/local/bin/edinburgh-api.py
+14 - sudo mkdir -p /srv/ftp/edinburgh
+15 - sudo tee /srv/ftp/edinburgh/catalog.txt << 'EOF'
+# Edinburgh Warehouse Inventory Catalog
+EDINBURGH_CATALOG_VERSION=1
+P001|Widget A|150|19.99|Aisle-3
+P002|Widget B|89|29.99|Aisle-3
+P003|Gadget X|45|49.99|Aisle-1
+EOF
+
+16 - sudo chmod 644 /srv/ftp/edinburgh/catalog.txt
+17 - ls -la /srv/ftp/edinburgh/
+18 - ftp -n 127.0.0.1 << 'EOF'
+quote USER edinburgh
+quote PASS edinburgh-catalog
+ls -la
+bye
+EOF
+
+19 - sudo mkdir -p /var/lib/edinburgh
+20 - sudo chown admin:admin /var/lib/edinburgh
+21 - python3 << 'PYEOF'
+import ftplib
+import os
+
+try:
+    ftp = ftplib.FTP('127.0.0.1')
+    ftp.login('edinburgh', 'edinburgh-catalog')
+    
+    with open('/var/lib/edinburgh/catalog.txt', 'wb') as f:
+        ftp.retrbinary('RETR catalog.txt', f.write)
+    
+    ftp.quit()
+    print("Catalog downloaded successfully!")
+except Exception as e:
+    print(f"Error: {e}")
+PYEOF
+
+22 - cat /etc/systemd/system/edinburgh-api.service
+23 - sudo nano /etc/systemd/system/edinburgh-api.service
+
+[Unit]
+Description=Edinburgh warehouse API
+After=network-online.target edinburgh-sync.service
+# Requires=edinburgh-sync.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/edinburgh-api.py
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+
+24 - sudo systemctl daemon-reload
+25 - sudo systemctl start edinburgh-api
+26 - sudo systemctl status edinburgh-api --no-pager
+27 - curl http://127.0.0.1:9178/
+28 - ./agent/check.sh
