@@ -1,0 +1,7 @@
+1 - echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -dates
+2 - echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -subject
+3 - echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -issuer
+4 - grep -r "ssl_certificate" /etc/nginx
+5 - sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj "/CN=localhost/O=Acme/OU=IT Department/L=Geneva/ST=Geneva/C=CH"
+6 - sudo systemctl reload nginx
+7 - ./agent/check.sh
