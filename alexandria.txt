@@ -1,0 +1,11 @@
+1 - cat /opt/backup/backup.sh
+2 - ls -la /var/backups/daily/
+3 - sudo crontab -l
+4 - cat /etc/cron.d/*
+5 - sudo systemctl status cron
+6 - sudo crontab -l | sed 's/\/opt\/backup\/old_backup.sh/\/opt\/backup\/backup.sh/' | sudo crontab -
+7 - sudo crontab -l
+8 - ls -la /opt/backup/backup.lock
+9 - sudo rm -f /opt/backup/backup.lock
+10 - sudo /opT/backup/backup.sh
+11 - ./agent/check.sh
