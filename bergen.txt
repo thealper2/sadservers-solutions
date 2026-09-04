@@ -1,0 +1,21 @@
+1 - ./standalone
+2 - sudo ss -tlnp | grep :8000
+3 - ps aux | grep 924
+4 - ls -la /home/admin/django_app/
+5 - sudo kill 924
+6 - ls -la /etc/nginx/sites-available/
+7 - ls -la /etc/nginx/sites-enabled/
+8 - cat /etc/nginx/sites-available/bergen
+9 - sudo systemctl stop django
+10 - sudo nano /etc/systemd/system/django.service
+ExecStart=/usr/bin/python3 manage.py runserver 0.0.0.0:8001
+
+11 - sudo nano /etc/nginx/sites-available/bergen
+proxy_pass http://127.0.0.1:8001;
+
+12 - sudo systemctl daemon-reload
+13 - sudo systemctl start django
+14 - sudo systemctl reload nginx
+15 - ./standalone
+16 - curl http://localhost:80
+17 - ./agent/check.sh
