@@ -1,0 +1,21 @@
+1 - sudo systemctl status postgresql --no-pager
+2 - ps aux | grep postgres
+3 - cat /etc/postgresql/14/main/postgresql.conf | grep data_directory
+4 - ls -la /opt/pgdata/main
+5 - sudo tail -50 /var/log/postgresql/postgresql-14-main.log
+6 - df -h
+7 - du -sh /opt/pgdata/*
+8 - rm /opt/pgdata/file1.bk
+9 - rm /opt/pgdata/file2.bk
+10 - df -h /opt/pgdata 
+11 - sudo cp /usr/share/postgresql/14/postgresql.conf.sample /opt/pgdata/main/postgresql.conf
+12 - sudo tee /opt/pgdata/main/pg_hba.conf << 'EOF'
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+local   all             postgres                                peer
+local   all             all                                     peer
+host    all             all             127.0.0.1/32            md5
+host    all             all             ::1/128                 md5
+EOF
+13 - sudo chown postgres:postgres /opt/pgdata/main/pg_hba.conf
+14 - ps aux | grep postgres | grep -v grep
+15 - sudo -u postgres psql -c "insert into persons(name) values ('jane smith');" -d dt
