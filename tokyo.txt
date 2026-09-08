@@ -1,0 +1,15 @@
+1 - sudo systemctl status apache2 --no-pager
+2 - curl -v 127.0.0.1:80
+3 - sudo ss -tlnp | grep apache
+4 - sudo tail -20 /var/log/apache2/error.log
+5 - cat /etc/apache2/sites-enabled/000-default.conf
+6 - ls -la /var/www/html/index.html
+7 - cat /var/www/html/index.html
+8 - sudo chown www-data:www-data /var/www/html/index.html
+9 - sudo chmod 644 /var/www/html/index.html
+10 - ps aux | grep apache | grep -v grep
+11 - sudo tail -20 /var/log/apache2/access.log
+12 - sudo iptables -L -n -v
+13 - sudo iptables -D INPUT -p tcp --dport 80 -j DROP
+14 - curl 127.0.0.1:80
+15 - ./agent/check.sh
