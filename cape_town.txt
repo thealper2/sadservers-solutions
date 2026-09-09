@@ -1,0 +1,19 @@
+1 - sudo systemctl status nginx --no-pager
+2 - cat /etc/nginx/sites-enabled/default
+3 - sudo sed -i '1d' /etc/nginx/sites-enabled/default
+4 - sudo nginx -t
+5 - sudo systemctl start nginx
+6 - sudo systemctl status nginx --no-pager
+7 - curl -Is 127.0.0.1:80 | head -1
+8 - sudo tail -20 /var/log/nginx/error.log
+9 - ulimit -n
+10 - sudo mkdir -p /etc/systemd/system/nginx.service.d
+11 - sudo tee /etc/systemd/system/nginx.service.d/override.conf << 'EOF'
+[Service]
+LimitNOFILE=65536
+EOF
+
+12 - sudo systemctl daemon-reload
+13 - sudo systemctl restart nginx
+14 - sudo systemctl status nginx --no-pager
+15 - curl -Is 127.0.0.1:80 | head -1
