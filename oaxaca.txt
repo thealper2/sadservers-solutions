@@ -1,0 +1,87 @@
+1 - lsof /home/admin/somefile
+2 - ps -p 808 -o pid,ppid,user,cmd
+3 - ls -la /proc/808/fd/77
+4 - python3 << 'PYEOF'
+import ctypes
+import os
+import struct
+
+libc = ctypes.CDLL("libc.so.6", use_errno=True)
+libc.ptrace.restype = ctypes.c_long
+
+pid = 808
+fd = 77
+
+PTRACE_ATTACH = 16
+PTRACE_DETACH = 17
+PTRACE_GETREGS = 12
+PTRACE_SETREGS = 13
+PTRACE_CONT = 7
+PTRACE_SYSCALL = 24
+
+class user_regs_struct(ctypes.Structure):
+    _fields_ = [
+        ("r15", ctypes.c_ulonglong), ("r14", ctypes.c_ulonglong),
+        ("r13", ctypes.c_ulonglong), ("r12", ctypes.c_ulonglong),
+        ("rbp", ctypes.c_ulonglong), ("rbx", ctypes.c_ulonglong),
+        ("r11", ctypes.c_ulonglong), ("r10", ctypes.c_ulonglong),
+        ("r9", ctypes.c_ulonglong), ("r8", ctypes.c_ulonglong),
+        ("rax", ctypes.c_ulonglong), ("rcx", ctypes.c_ulonglong),
+        ("rdx", ctypes.c_ulonglong), ("rsi", ctypes.c_ulonglong),
+        ("rdi", ctypes.c_ulonglong), ("orig_rax", ctypes.c_ulonglong),
+        ("rip", ctypes.c_ulonglong), ("cs", ctypes.c_ulonglong),
+        ("eflags", ctypes.c_ulonglong), ("rsp", ctypes.c_ulonglong),
+        ("ss", ctypes.c_ulonglong), ("fs_base", ctypes.c_ulonglong),
+        ("gs_base", ctypes.c_ulonglong), ("ds", ctypes.c_ulonglong),
+        ("es", ctypes.c_ulonglong), ("fs", ctypes.c_ulonglong),
+        ("gs", ctypes.c_ulonglong),
+    ]
+
+regs = user_regs_struct()
+
+if libc.ptrace(PTRACE_ATTACH, pid, None, None) == -1:
+    print(f"attach failed: {os.strerror(ctypes.get_errno())}")
+    exit(1)
+
+os.waitpid(pid, 0)
+
+# Save original registers
+libc.ptrace(PTRACE_GETREGS, pid, None, ctypes.byref(regs))
+
+# Find a syscall instruction in the process memory to jump to
+# Actually, easier: use the current RIP, set rax=SYS_close, rdi=fd,
+# and single-step over a syscall. But we need a syscall instruction.
+# Simpler approach: use PTRACE_SYSCALL to stop at syscall entry/exit,
+# then modify rax/rdi at a syscall boundary.
+
+# Let's continue with PTRACE_SYSCALL until we hit a syscall entry,
+# then change the syscall to close(77).
+
+print("Continuing with PTRACE_SYSCALL...")
+libc.ptrace(PTRACE_SYSCALL, pid, None, None)
+os.waitpid(pid, 0)
+
+# Now we should be at a syscall entry (or exit). Get regs.
+libc.ptrace(PTRACE_GETREGS, pid, None, ctypes.byref(regs))
+
+# Check if orig_rax is a valid syscall number (not -1 which means syscall-exit)
+# SYS_close = 3 on x86_64
+print(f"orig_rax={regs.orig_rax}, rax={regs.rax}")
+
+# Set up close(77)
+regs.orig_rax = 3  # SYS_close
+regs.rdi = fd
+regs.rax = 3
+
+libc.ptrace(PTRACE_SETREGS, pid, None, ctypes.byref(regs))
+
+# Execute the syscall
+libc.ptrace(PTRACE_SYSCALL, pid, None, None)
+os.waitpid(pid, 0)
+
+# Detach
+libc.ptrace(PTRACE_DETACH, pid, None, None)
+print("Done")
+PYEOF
+5 - lsof /homE/admin/somefile
+6 - /home/admin/agent/check.sh
