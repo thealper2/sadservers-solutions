@@ -1,0 +1,6 @@
+1 - aws ec2 describe-volumes
+2 - aws ec2 describe-volumes --query "Volumes[].[VolumeId,State]" --output text
+3 - aws ec2 delete-volume --volume-id vol-4f4f9629f9fcc594b
+4 - aws ec2 delete-volume --volume-id vol-b04df433874905862
+5 - aws ec2 delete-volume --volume-id vol-c7492185598b40da5
+6 - /home/admin/agent/check.sh
