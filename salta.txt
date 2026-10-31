@@ -1,0 +1,13 @@
+1 - sudo ss -tlnp | grep :8888
+2 - sudo systemctl stop nginx
+3 - sudo systemctl disable nginx
+4 - cat /home/admin/app/Dockerfile
+5 - cat /home/admin/app/server.js
+6 - cat /home/admin/app/package.json
+7 - sed -i 's/serve\.js/server.js/' /home/admin/app/Dockerfile
+8 - sed -i 's/EXPOSE 8880/EXPOSE 8888/' /home/admin/app/Dockerfile
+9 - tail -5 /home/admin/app/Dockerfile
+10 - cd /home/admin/app
+11 - docker build -t salta-app .
+12 - docker run -d --name salta-app -p 8888:8888 salta-app
+13 - /home/admin/agent/check.sh
